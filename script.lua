@@ -27,6 +27,7 @@ head.Head:setPrimaryTexture("SKIN")
 head.Head:setPrimaryRenderType("CUTOUT_CULL")
 head.Het:setScale(1.4, 1.4, 1.4)
 
+avatar:store("env", _ENV)
 
 local skull = deepCopy(head)
 skull:removeChild(skull.Head)
