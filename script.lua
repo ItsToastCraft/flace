@@ -63,9 +63,7 @@ end
 
 pings.setHat(currentHat)
 
-
 -- action wheel --
-
 local pages = { action_wheel:newPage("hat") }
 local buttonColor = "#3764b1"
 
@@ -77,44 +75,47 @@ main:newAction()
 	:setOnLeftClick(function() action_wheel:setPage(pages[1]) end)
 action_wheel:setPage(main)
 
+function events.entity_init()
+	for i = 1, #hats do
+		if i % 7 == 0 then -- Adjusted the condition to start a new page
+			table.insert(pages, action_wheel:newPage("hat"))
+		end
 
-for i = 1, #hats do
-	if i % 7 == 0 then -- Adjusted the condition to start a new page
-		table.insert(pages, action_wheel:newPage("hat"))
-	end
+		local pageIndex = math.floor(i / 7) + 1
 
-	local pageIndex = math.floor(i / 7) + 1
-
-	local slot = ((i - 1) % 6) + 2
-	if pageIndex == 1 then
-		pages[1]:newAction(8)
-			:setTexture(textures.texture, 112, 16, 16, 16, 1)
-			:setTitle("Home")
+		local slot = ((i - 1) % 6) + 2
+		pages[pageIndex]:newAction(1)
+			:setTexture(textures.texture, 112, 0, 16, 16, 1)
+			:setTitle("Next Page")
 			:setColor(vectors.hexToRGB(buttonColor))
 			:setOnLeftClick(function()
-				action_wheel:setPage(main)
+				action_wheel:setPage(pages[(pageIndex % #pages) + 1])
 			end)
-	else
-		pages[pageIndex]:newAction(8)
-			:setTexture(textures.texture, 96, 0, 16, 16, 1)
-			:setTitle("Previous Page")
-			:setColor(vectors.hexToRGB(buttonColor))
-			:setOnLeftClick(function()
-				action_wheel:setPage(pages[((pageIndex - 2) % #pages) + 1])
-			end)
+
+		pages[pageIndex]:newAction(slot)
+			:setItem("player_head{SkullOwner:" .. player:getName() .. ",Data:" .. i .. "}")
+			:setTitle(hats[i][2])
+			:setOnLeftClick(function() pings.setHat(i) end)
+			:setColor(vectors.hexToRGB(hats[i][4]))
+
+		if pageIndex == 1 then
+			pages[1]:newAction(8)
+				:setTexture(textures.texture, 112, 16, 16, 16, 1)
+				:setTitle("Home")
+				:setColor(vectors.hexToRGB(buttonColor))
+				:setOnLeftClick(function()
+					action_wheel:setPage(main)
+				end)
+		else
+			pages[pageIndex]:newAction(8)
+				:setTexture(textures.texture, 96, 0, 16, 16, 1)
+				:setTitle("Previous Page")
+				:setColor(vectors.hexToRGB(buttonColor))
+				:setOnLeftClick(function()
+					action_wheel:setPage(pages[((pageIndex - 2) % #pages) + 1])
+				end)
+		end
 	end
-	pages[pageIndex]:newAction(slot)
-		:setItem("player_head{SkullOwner:" .. "ItsToastCraft" .. ",Data:" .. i .. "}")
-		:setTitle(hats[i][2])
-		:setOnLeftClick(function() pings.setHat(i) end)
-		:setColor(vectors.hexToRGB(hats[i][4]))
-	pages[pageIndex]:newAction(1)
-		:setTexture(textures.texture, 112, 0, 16, 16, 1)
-		:setTitle("Next Page")
-		:setColor(vectors.hexToRGB(buttonColor))
-		:setOnLeftClick(function()
-			action_wheel:setPage(pages[(pageIndex % #pages) + 1])
-		end)
 end
 
 function events.skull_render(delta, blockstate, itemStack, entity, type)
@@ -128,7 +129,7 @@ function events.skull_render(delta, blockstate, itemStack, entity, type)
 	skull:setPos(0, type == "BLOCK" and -30 or type == "HEAD" and -24 or -32, 0)
 end
 
---   tick   --
+-- tick --
 function events.tick()
 	--variables--
 	local worldTime = world.getTime()
