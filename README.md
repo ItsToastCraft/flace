@@ -18,6 +18,8 @@ Don't purposefully overwrite something that somebody has created, unless to opti
 
 Simply create a fork and then make a pull request, and it will be merged after review!
 
+When submitting a pull request, please add pictures/descriptions of your changes.
+
 ## Cone was here.
 
 ## Credits
@@ -25,3 +27,5 @@ Simply create a fork and then make a pull request, and it will be merged after r
 • MxDuck with the Cone Het
 
 • ItsToastCraft with every other hat
+
+• TheKillerBunny with the stick player model
