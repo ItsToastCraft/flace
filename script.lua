@@ -3,6 +3,7 @@ config:setName("Flace")
 
 -- some vanilla stuff --
 vanilla_model.HEAD:setVisible(false) -- You can hide this line if you're using this with another model, just make sure that the head on that model is rendered first
+vanilla_model.ALL:setVisible(false)
 vanilla_model.HELMET:setVisible(false)
 vanilla_model.CAPE:setVisible(false)
 vanilla_model.HELMET_ITEM:setVisible(true)
